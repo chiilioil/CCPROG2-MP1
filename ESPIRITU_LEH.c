@@ -49,6 +49,8 @@
     You may declare any typedef that you need below this comment.
 */
 
+// feel like we shld include string typedefs here for the arrays
+
 //Constants for array size
 #define MAX_TERRITORY 250
 #define MAX_LENGTH 50
@@ -84,7 +86,16 @@
     Follow the online documentation style in the LinearSearch() example function definition given below.
 */
 
+int processData(){
 
+
+	
+	//loop for reading risk factors
+	for (int i = 0; i < MAX_TERRITORY < i++){
+		for (int j = 1; j < 15; j++){
+			scanf("%lf", riskFactors[i][j]);
+	}
+}
 
 /*  galing notes ko -- scans indefinitely para di naka-cap ung read function natin 
 while (scanf("%d %s %s %f", &ID, lastname, firstname, &grade) == 4){	
@@ -92,3 +103,13 @@ while (scanf("%d %s %s %f", &ID, lastname, firstname, &grade) == 4){
 	}
 
 */
+
+
+
+int main(){
+	char countryNames[MAX_TERRITORY][MAX_LENGTH]; // stores country names
+	double baselineExpectancy[MAX_TERRITORY]; // stores baseline life expectancy
+	double riskFactors[MAX_TERRITORY][15]; // stores risk factors
+
+	
+}

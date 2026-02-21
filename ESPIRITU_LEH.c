@@ -1,1 +1,94 @@
+/*
+        CCPROG2 MP PART 1 C SOURCE CODE
+  
+        GROUP NUMBER (2 digits): 35
+        DATE SUBMITTED         : 
 
+        ESPIRITU, GENE CLEMENT                          SECTION1:S18A
+        LEH, ELYSHA AUDREY                              SECTION2: S20B
+
+        NOTE: encode ONLY your NAME if this code is for your own individual solution
+              encode BOTH names and sections if this code is for your GROUP's FINAL solution
+
+        Do not forget to encode your name, section and date of submission.      
+		
+	For your FINAL solution: Rename this file using your last names in alphabetical order, for example CRUZ_TAN.c
+		
+	Make sure to compile your C source code with a -Wall directive.  
+	   Example: CCPROG2> gcc -Wall ESPIRITU_LEH.c
+	   
+	Fix all warnings.  Do NOT run the program if you still have a warning.  You must have
+	0 error, 0 warning before running the program.
+	   
+	Run the resulting a.exe file in the command line with input and output (I/O) redirection.
+	   Example: a < SoGA_DATASET.TXT > OUTPUT_ESPIRITU_LEH.TXT
+
+*/
+
+#include <stdio.h>
+#include <string.h>
+/* Do NOT include other header files. */ 
+
+/* 
+    HARD REQUIREMENTS: NON-COMPLIANCE WILL MAKE YOUR SOLUTION INCORRECT or CAUSE POINT DEDUCTIONS!
+	
+    1. You must apply arrays and strings in MP Part 1 (MP1).
+    2. Use double data type (not float) for all floating point values/variables/functions/return type
+    3. Do NOT use library functions that were NOT discussed in our class.    
+    4. Do NOT use any global variables and goto statement with labels.
+    5. Do NOT use a return statement if the function is of type void.
+    6. Do NOT call printf() except inside the main() function.
+    7. Do NOT use the following yet in this MP part.
+          a. struct data type
+	  b. file processing functions such as fopen(), fclose(), etc.
+    8. Document your codes with SENSIBLE comments as specified below.
+*/
+
+
+/*
+    You may declare any typedef that you need below this comment.
+*/
+
+//Constants for array size
+#define MAX_TERRITORY 250
+#define MAX_LENGTH 50
+#define NUM 14
+
+//Risk factors indices
+#define AIR_POLLUTION 0
+#define AMBIENT_PM25 1
+#define OZONE 2
+#define HOUSEHOLD_AIR_POLLUTION 3
+#define ENVIRONMENTAL 4
+#define OCCUPATIONAL 5
+#define UNSAFE_WASH 6
+#define METABOLIC 7
+#define DIETARY 8
+#define HIGH_FASTING_PLASMA_SUGAR 9
+#define TOBACCO 10
+#define SMOKING 11
+#define SECOND_HAND_SMOKE 12
+#define UNSAFE_SEX 13
+/*
+    Define any function that you need below this comment.  
+
+    You are required to document your functions with SENSIBLE comments. Each function definition must
+    be PRECEDED by an online documentation (in the form of comments) describing concisely the following:
+       a. Purpose: describe succintly what the function is supposed to accomplish.
+       b. Parameters: describe succintly the nature/purpose of each parameter.
+       c. Return type: if the function is not void, describe succintly what it will return as a result.          
+       
+    Thereafter, document the body of the function by including comments alongside codes that you think
+    may not be easy to understand to the person reading the codes. 
+
+    Follow the online documentation style in the LinearSearch() example function definition given below.
+*/
+
+
+
+/*  galing notes ko -- scans indefinitely para di naka-cap ung read function natin 
+while (scanf("%d %s %s %f", &ID, lastname, firstname, &grade) == 4){	
+			printf("%d %-15s %-15s %.1f\n", ID, lastname, firstname, grade);
+	}
+
+*/

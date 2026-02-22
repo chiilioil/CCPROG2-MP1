@@ -90,7 +90,6 @@ int process Data(char territory[][MAX_LENGTH], double baseline[], double riskfac
     int count = 0;
     int i;
     
-    
     while (scanf("%s", territory[count]) == 1) { //loop for reading all data
 
         for (i = 0; i < NUM; i++) { //loop for reading the risk factors
@@ -102,6 +101,53 @@ int process Data(char territory[][MAX_LENGTH], double baseline[], double riskfac
     return count;
 }
 
+int SearchTerritory(char *territoryName, char territory[][MAX_LENGTH], int nTerritory){
+    int i;
+    
+    for (i = 0; i < nTerritory; i++) {
+        if (strcmp(territory[i], territoryName) == 0) {
+            return i; //returns index of territory if found
+        }
+    }
+    
+    return -1; //if not found
+}
+
+// unsure if need pa this func
+
+/*
+int countElements(char test1[5][40]){
+		
+	int i, count = 0; // indexing and counter variables
+	
+	for (i = 0; i < 5; i++){
+		if(test1[i][0] != '\0')
+			count++; // if the first element of the string is not null (the string is not empty), increments count by one.
+	}
+	
+	return count; // returns count of existing countries back to the main function
+}
+*/
+
+int GetRiskFactorIndex(char *riskName){
+	//returns the index of the risk factor
+    if (strcmp(riskName, "Air_Pollution") == 0) return AIR_POLLUTION;
+    if (strcmp(riskName, "Ambient_PM2.5") == 0) return AMBIENT_PM25;
+    if (strcmp(riskName, "Ozone") == 0) return OZONE;
+    if (strcmp(riskName, "Household_Air_Pollution") == 0) return HOUSEHOLD_AIR_POLLUTION;
+    if (strcmp(riskName, "Environmental") == 0) return ENVIRONMENTAL;
+    if (strcmp(riskName, "Occupational") == 0) return OCCUPATIONAL;
+    if (strcmp(riskName, "Unsafe_WaSH") == 0) return UNSAFE_WASH;
+    if (strcmp(riskName, "Metabolic") == 0) return METABOLIC;
+    if (strcmp(riskName, "Dietary") == 0) return DIETARY;
+    if (strcmp(riskName, "High_Fasting_Plasma_Sugar") == 0) return HIGH_FASTING_PLASMA_SUGAR;
+    if (strcmp(riskName, "Tobacco") == 0) return TOBACCO;
+    if (strcmp(riskName, "Smoking") == 0) return SMOKING;
+    if (strcmp(riskName, "Second_Hand_Smoke") == 0) return SECOND_HAND_SMOKE;
+    if (strcmp(riskName, "Unsafe_Sex") == 0) return UNSAFE_SEX;
+    
+    return -1; 
+}
 
 int main(){
 	char countryNames[MAX_TERRITORY][MAX_LENGTH]; // stores country names
@@ -195,7 +241,8 @@ int main(){
     }
 
 	/* ==================== QUESTION 4 ==================== */
-    printf("\nQuestion 4:\n\n");
+    
+	printf("\nQuestion 4:\n\n");
     
     int test4[5] = {75, 80, 82, 85, 90};
     

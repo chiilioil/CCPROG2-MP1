@@ -111,5 +111,71 @@ int main(){
 	double baselineExpectancy[MAX_TERRITORY]; // stores baseline life expectancy
 	double riskFactors[MAX_TERRITORY][15]; // stores risk factors
 
+	char riskText[15][40] = {
+        "Baseline_LE", "Air_Pollution", "Ambient_PM2.5", "Ozone", 
+        "Household_Air_Pollution", "Environmental", "Occupational", 
+        "Unsafe_WaSH", "Metabolic", "Dietary", "High_Fasting_Plasma_Sugar", 
+        "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"
+    };
+
+	int i, j, k, idx, actualRisk;
+
+	  /* ==================== QUESTION 1 ==================== */
+    printf("Question 1:\n\n");
+	 char test1[5][5][MAX_LENGTH] = {
+        {"Barbados", "Japan", "Chile", "Montenegro", "Australia"},
+        {"Georgia", "Belize", "", "", ""},
+        {"Peru", "Armenia", "Italy", "Cyprus", "Argentina"},
+        {"France", "", "", "", ""},
+        {"Portugal", "Afghanistan", "Greece", "Malta", "Argentina"}
+    };
+
+	double average = 0;
+    int count = 0;
+    
+    for (i = 0; i < 5; i++) {
+        count = CountElements(test1[i], 5);
+        
+        Q1_Answer(test1[i], count, &average, territory, baseline, nTerritory);
+        
+        /* Print question */
+        printf("What is the average baseline life expectancy across ");
+        for (j = 0; j < count; j++) {
+            if ((j == count - 1) && (count > 1))
+                printf("and ");
+            if (j < count - 1)
+                printf("%s, ", test1[i][j]);
+            else
+                printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
+        }
+        
+        /* Print answer */
+        printf("A:\n");
+        for (k = 0; k < count; k++) {
+            idx = SearchTerritory(test1[i][k], territory, nTerritory);
+            
+            if (idx != -1)
+                printf("%-40s : %.6lf\n", territory[idx], baseline[idx]);
+            else
+                printf("%-40s : NOT FOUND\n", test1[i][k]);
+        }
+        
+        printf("\nAverage = %.6lf\n\n", average);
+    }
+
+	 /* ==================== QUESTION 2 ==================== */
+    printf("\nQuestion 2:\n\n");
+    
+    int test2[5] = {AIR_POLLUTION, OCCUPATIONAL, METABOLIC, TOBACCO, UNSAFE_SEX};
+    
+    for (i = 0; i < 5; i++) {
+        actualRisk = test2[i];
+        printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", 
+               riskText[actualRisk + 1]);  // +1 because riskText includes Baseline at [0]
+        
+        char *highest = Q2_Answer(actualRisk, territory, riskFactors, nTerritory);
+        printf("A: %s\n\n", highest);
+    }
+
 	
 }

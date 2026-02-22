@@ -174,5 +174,60 @@ int main(){
         printf("A: %s\n\n", highest);
     }
 
+	/* ==================== QUESTION 3 ==================== */
+    printf("\nQuestion 3:\n\n");
+    
+    int test3[5] = {AMBIENT_PM25, OZONE, HIGH_FASTING_PLASMA_SUGAR, SMOKING, SECOND_HAND_SMOKE};
+    char answer3[5][MAX_LENGTH];
+    
+    for (i = 0; i < 5; i++) {
+        actualRisk = test3[i];
+        Q3_Answer(actualRisk, answer3, territory, riskFactors, nTerritory);
+        
+        printf("Which five countries have the lowest loss of baseline life expectancy due to %s?\n", 
+               riskText[actualRisk + 1]);  // +1 because riskText includes Baseline at [0]
+        printf("A:\n");
+        
+        for (j = 0; j < 5; j++) {
+            printf("%d) %s\n", j + 1, answer3[j]);
+        }
+        printf("\n");
+    }
+
+	/* ==================== QUESTION 4 ==================== */
+    printf("\nQuestion 4:\n\n");
+    
+    int test4[5] = {75, 80, 82, 85, 90};
+    
+    for (i = 0; i < 5; i++) {
+        printf("How many countries have a baseline life expectancy of at least %d?\n", test4[i]);
+        count = Q4_Answer((double)test4[i], baseline, nTerritory);
+        printf("A: %d\n\n", count);
+    }
+    
+    /* ==================== QUESTION 5 ==================== */
+    printf("\nQuestion 5:\n\n");
+    
+    int testRisk5[5] = {AMBIENT_PM25, OZONE, OCCUPATIONAL, HIGH_FASTING_PLASMA_SUGAR, SMOKING};
+    char testCountry[5][MAX_LENGTH] = {"Argentina", "Chile", "Italy", "Solomon_Islands", "Philippines"};
+    
+    for (i = 0; i < 5; i++) {
+        int cntIdx = Q5_Answer(testCountry[i], territory, nTerritory);
+        actualRisk = testRisk5[i];
+        
+        if (cntIdx != -1) {
+            printf("What are the statistics for %s for %s?\n", 
+                   riskText[actualRisk + 1], territory[cntIdx]);
+            printf("A:\n");
+            printf("%-40s : %.6lf\n\n", territory[cntIdx], riskFactors[cntIdx][actualRisk]);
+        } else {
+            printf("Country %s not found.\n\n", testCountry[i]);
+        }
+    }
+    
+    return 0;
+}
+
+
 	
 }

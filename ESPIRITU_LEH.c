@@ -54,7 +54,7 @@
 //Constants for array size
 #define MAX_TERRITORY 250
 #define MAX_LENGTH 50
-#define NUM 14
+#define NUM 15 // baseline life expectancy + 14 risks
 
 //Risk factors indices
 #define AIR_POLLUTION 0
@@ -86,24 +86,21 @@
     Follow the online documentation style in the LinearSearch() example function definition given below.
 */
 
-int processData(){
+int process Data(char territory[][MAX_LENGTH], double baseline[], double riskfactors[][NUM]) {
+    int count = 0;
+    int i;
+    
+    
+    while (scanf("%s", territory[count]) == 1) { //loop for reading all data
 
-
-	
-	//loop for reading risk factors
-	for (int i = 0; i < MAX_TERRITORY < i++){
-		for (int j = 1; j < 15; j++){
-			scanf("%lf", riskFactors[i][j]);
-	}
+        for (i = 0; i < NUM; i++) { //loop for reading the risk factors
+            scanf("%lf", &riskfactors[count][i]);
+        }
+        count++;
+    }
+    
+    return count;
 }
-
-/*  galing notes ko -- scans indefinitely para di naka-cap ung read function natin 
-while (scanf("%d %s %s %f", &ID, lastname, firstname, &grade) == 4){	
-			printf("%d %-15s %-15s %.1f\n", ID, lastname, firstname, grade);
-	}
-
-*/
-
 
 
 int main(){

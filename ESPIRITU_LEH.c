@@ -186,19 +186,16 @@ void Q3_Answer(int riskIdx, char top5[][MAX_LENGTH],
     char tempTerritory[MAX_TERRITORY][MAX_LENGTH];
     double tempValues[MAX_TERRITORY];
     
-    /* Copy data (skip Global at index 0) */
     for (i = 1; i < nTerritory; i++) {
         strcpy(tempTerritory[count], territory[i]);
         tempValues[count] = riskFactors[i][riskIdx];
         count++;
     }
-    
-    /* Sort */
+
     SelectionSort(tempTerritory, tempValues, count);
     
-    /* Copy top 5 */
     for (i = 0; i < 5 && i < count; i++) {
-        strcpy(top5[i], tempTerritory[i]);
+        strcpy(top5[i], tempTerritory[i]);  // Copy top 5 
     }
 }
 
@@ -214,7 +211,6 @@ int Q4_Answer(double threshold, double riskFactors[][NUM], int nTerritory)
     
     return count;
 }
-
 
 /*-----------------------------------------------------------------------------------------*/
 

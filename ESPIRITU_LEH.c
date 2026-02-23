@@ -2,7 +2,7 @@
         CCPROG2 MP PART 1 C SOURCE CODE
   
         GROUP NUMBER (2 digits): 35
-        DATE SUBMITTED         : 
+        DATE SUBMITTED         : 02-23-26
 
         ESPIRITU, GENE CLEMENT                          SECTION1:S18A
         LEH, ELYSHA AUDREY                              SECTION2: S20B
@@ -56,21 +56,6 @@
 #define MAX_LENGTH 50
 #define NUM 15 // baseline life expectancy + 14 risks
 
-//Risk factors indices
-#define AIR_POLLUTION 0
-#define AMBIENT_PM25 1
-#define OZONE 2
-#define HOUSEHOLD_AIR_POLLUTION 3
-#define ENVIRONMENTAL 4
-#define OCCUPATIONAL 5
-#define UNSAFE_WASH 6
-#define METABOLIC 7
-#define DIETARY 8
-#define HIGH_FASTING_PLASMA_SUGAR 9
-#define TOBACCO 10
-#define SMOKING 11
-#define SECOND_HAND_SMOKE 12
-#define UNSAFE_SEX 13
 /*
     Define any function that you need below this comment.  
 
@@ -86,20 +71,35 @@
     Follow the online documentation style in the LinearSearch() example function definition given below.
 */
 
-int process Data(char territory[][MAX_LENGTH], double baseline[], double riskfactors[][NUM]) {
+
+//processes data -- array for names (territory), and array for riskfactors where index 0 is baseline life expectancy, and 1-14 would be the 14 risk factors. also counts how many countries there are total in the dataset and returns this value. ASSUMES THAT MAX_TERRITORY can account for the number of territories that the dataset will hold.
+int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
     int count = 0;
     int i;
     
     while (scanf("%s", territory[count]) == 1) { //loop for reading all data
 
         for (i = 0; i < NUM; i++) { //loop for reading the risk factors
-            scanf("%lf", &riskfactors[count][i]);
+            scanf("%lf", &riskFactors[count][i]);
         }
         count++;
     }
     
     return count;
 }
+
+// helping function for testing
+int GetRiskFactorIndex(char *riskName){ // does the same thing as the code above, pacheck nlng if prefer m
+
+	char names[15][MAX_LENGTH] = {"Baseline_Life_Expectancy", "Air_Pollution", "Ambient_PM2.5", "Ozone", "Household_Air_Pollution", "Environmental", "Occupational", "Unsafe_WaSH", "Metabolic", "Dietary", "High_Fasting_Plasma_Sugar", "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"};
+
+	for (int i = 0; i < 15; i++){
+		if (strcmp(riskName, names[i]) == 0)
+			return i;
+	}
+	return -1;
+}
+
 
 int SearchTerritory(char *territoryName, char territory[][MAX_LENGTH], int nTerritory){
     int i;
@@ -113,46 +113,112 @@ int SearchTerritory(char *territoryName, char territory[][MAX_LENGTH], int nTerr
     return -1; //if not found
 }
 
-// unsure if need pa this func
-
-/*
-int countElements(char test1[5][40]){
+int CountCountries(char test[][MAX_LENGTH]){
 		
 	int i, count = 0; // indexing and counter variables
 	
 	for (i = 0; i < 5; i++){
-		if(test1[i][0] != '\0')
+		if(test[i][0] != '\0')
 			count++; // if the first element of the string is not null (the string is not empty), increments count by one.
 	}
 	
 	return count; // returns count of existing countries back to the main function
 }
-*/
 
-int GetRiskFactorIndex(char *riskName){
-	//returns the index of the risk factor
-    if (strcmp(riskName, "Air_Pollution") == 0) return AIR_POLLUTION;
-    if (strcmp(riskName, "Ambient_PM2.5") == 0) return AMBIENT_PM25;
-    if (strcmp(riskName, "Ozone") == 0) return OZONE;
-    if (strcmp(riskName, "Household_Air_Pollution") == 0) return HOUSEHOLD_AIR_POLLUTION;
-    if (strcmp(riskName, "Environmental") == 0) return ENVIRONMENTAL;
-    if (strcmp(riskName, "Occupational") == 0) return OCCUPATIONAL;
-    if (strcmp(riskName, "Unsafe_WaSH") == 0) return UNSAFE_WASH;
-    if (strcmp(riskName, "Metabolic") == 0) return METABOLIC;
-    if (strcmp(riskName, "Dietary") == 0) return DIETARY;
-    if (strcmp(riskName, "High_Fasting_Plasma_Sugar") == 0) return HIGH_FASTING_PLASMA_SUGAR;
-    if (strcmp(riskName, "Tobacco") == 0) return TOBACCO;
-    if (strcmp(riskName, "Smoking") == 0) return SMOKING;
-    if (strcmp(riskName, "Second_Hand_Smoke") == 0) return SECOND_HAND_SMOKE;
-    if (strcmp(riskName, "Unsafe_Sex") == 0) return UNSAFE_SEX;
-    
-    return -1; 
+/*-----------------------------------------------------------------------------------------*/
+
+ printf("Question 1:\n\n");
+	 char test1[5][5][MAX_LENGTH] = {
+        {"Barbados", "Japan", "Chile", "Montenegro", "Australia"},
+        {"Georgia", "Belize"},
+        {"Peru", "Armenia", "Italy", "Cyprus", "Argentina"},
+        {"France"},
+        {"Portugal", "Afghanistan", "Greece", "Malta", "Argentina"}
+    };
+
+    for (i = 0; i < 5; i++) {;
+							 
+        double answer1 = Q1_Answer(test1[i], territory);
+        
+        /* Print question */
+        printf("What is the average baseline life expectancy across ");
+        for (j = 0; j < count; j++) {
+            if ((j == count - 1) && (count > 1))
+                printf("and ");
+            if (j < count - 1)
+                printf("%s, ", test1[i][j]);
+            else
+                printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
+        }
+        
+        /* Print answer */
+        printf("A:\n");
+        for (k = 0; k < count; k++) {
+            idx = SearchTerritory(test1[i][k], territory, nTerritory);
+            
+            if (idx != -1)
+                printf("%-40s : %.6lf\n", territory[idx], baseline[idx]);
+            else
+                printf("%-40s : NOT FOUND\n", test1[i][k]);
+        }
+        
+        printf("\nAverage = %.6lf\n\n", answer1);
+    }
+
+
+
+double Q1_Answer(test[][MAX_TERRITORIES]){
+
+	int i, index;
+	double sum = 0;
+	
+	*count = countCountries(test);
+
+	
+
+	for ()
+
+	
+
+	
+	
+	
+	return 0;
 }
 
+
+
+/*-----------------------------------------------------------------------------------------*/
+
 int main(){
-	char countryNames[MAX_TERRITORY][MAX_LENGTH]; // stores country names
-	double baselineExpectancy[MAX_TERRITORY]; // stores baseline life expectancy
+	char territory[MAX_TERRITORY][MAX_LENGTH]; // stores country names
 	double riskFactors[MAX_TERRITORY][15]; // stores risk factors
+
+
+	//Function outputs
+		char foundCountry[MAX_TERRITORY][MAX_LENGTH];
+		double values[MAX_TERRITORY];
+		int nFound;
+		double average;
+		
+		char maxCountry[MAX_LENGTH];
+		double maxValue;
+		
+		char top5Countries[5][MAX_LENGTH];
+    	double top5Values[5];
+    
+    	char matchingCountries[MAX_TERRITORY][MAX_LENGTH];
+    	int count;
+    	double statValue;
+    
+    //Test cases
+    	int i, j, k;
+    	// char test[10][MAX_LENGTH];
+    	//int num_test_countries;
+    
+    //Reads the data set & stores # of countries there are in the dataset
+   	 nTerritory = ReadData(territory, baseline, riskfactors);
+	
 
 	char riskText[15][40] = {
         "Baseline_LE", "Air_Pollution", "Ambient_PM2.5", "Ozone", 
@@ -255,9 +321,9 @@ int main(){
     /* ==================== QUESTION 5 ==================== */
     printf("\nQuestion 5:\n\n");
     
-    int testRisk5[5] = {AMBIENT_PM25, OZONE, OCCUPATIONAL, HIGH_FASTING_PLASMA_SUGAR, SMOKING};
+    char testRisk5[5][MAX_LENGTH] = {"Ambient_PM2.5", "Ozone", "Occupational", "High_Fasting_Plasma_Sugar", "Smoking};
     char testCountry[5][MAX_LENGTH] = {"Argentina", "Chile", "Italy", "Solomon_Islands", "Philippines"};
-    
+	
     for (i = 0; i < 5; i++) {
         int cntIdx = Q5_Answer(testCountry[i], territory, nTerritory);
         actualRisk = testRisk5[i];

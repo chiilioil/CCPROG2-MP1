@@ -49,8 +49,6 @@
     You may declare any typedef that you need below this comment.
 */
 
-// feel like we shld include string typedefs here for the arrays
-
 //Constants for array size
 #define MAX_TERRITORY 250
 #define MAX_LENGTH 50
@@ -81,19 +79,20 @@
 */
 
 int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
-    int count = 0;
-    int i;
+    int count = 0, i; // counter and indexing variables
 
-	
-    while (scanf("%s", territory[count]) == 1) { //loop for reading all data
+	// loops so long as the first line of text per row is a string (territory name)
+    while (scanf("%s", territory[count]) == 1) {
 
-        for (i = 0; i < NUM; i++) { //loop for reading the risk factors
+		// loops to store the numerical data per country
+        for (i = 0; i < NUM; i++) {
             scanf("%lf", &riskFactors[count][i]);
         }
         count++;
     }
-    
-    return count;
+
+	// returns the number of territories in the dataset
+    return count; 
 }
 
 // helping function for testing

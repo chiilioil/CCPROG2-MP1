@@ -152,6 +152,68 @@ double Q2_Answer(){
 }
 
 
+void SelectionSort (char territory[][MAX_LENGTH], double values[], int n)
+{
+	int i, j, minIdx;
+    double tempVal;
+    char tempName[MAX_LENGTH];
+    
+    for (i = 0; i < n - 1; i++) {
+        minIdx = i;
+        
+        for (j = i + 1; j < n; j++) {
+            if (values[j] < values[minIdx]) {
+                minIdx = j;
+            }
+        }
+        
+        if (minIdx != i) {
+            tempVal = values[i];
+            values[i] = values[minIdx];
+            values[minIdx] = tempVal;
+            
+            strcpy(tempName, territory[i]);
+            strcpy(territory[i], territory[minIdx]);
+            strcpy(territory[minIdx], tempName);
+        }
+    }
+}
+
+void Q3_Answer(int riskIdx, char top5[][MAX_LENGTH],
+          char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory)
+{
+    int i, count = 0;
+    char tempTerritory[MAX_TERRITORY][MAX_LENGTH];
+    double tempValues[MAX_TERRITORY];
+    
+    /* Copy data (skip Global at index 0) */
+    for (i = 1; i < nTerritory; i++) {
+        strcpy(tempTerritory[count], territory[i]);
+        tempValues[count] = riskFactors[i][riskIdx];
+        count++;
+    }
+    
+    /* Sort */
+    SelectionSort(tempTerritory, tempValues, count);
+    
+    /* Copy top 5 */
+    for (i = 0; i < 5 && i < count; i++) {
+        strcpy(top5[i], tempTerritory[i]);
+    }
+}
+
+int Q4_Answer(double threshold, double riskFactors[][NUM], int nTerritory)
+{
+    int i, count = 0;
+    
+    for (i = 1; i < nTerritory; i++) {
+        if (riskFactors[i][0] >= threshold) { // Index 0 is baseline LE
+            count++;
+        }
+    }
+    
+    return count;
+}
 
 
 /*-----------------------------------------------------------------------------------------*/

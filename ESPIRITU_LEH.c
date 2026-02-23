@@ -222,6 +222,12 @@ int Q4_Answer(double threshold, double riskFactors[][NUM], int nTerritory)
     return count;
 }
 
+int 
+Q5_Answer(char *countryName, char territory[][MAX_LENGTH], int nTerritory)
+{
+    return SearchTerritory(countryName, territory, nTerritory);
+}
+
 /*-----------------------------------------------------------------------------------------*/
 
 int main(){

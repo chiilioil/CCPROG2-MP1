@@ -154,7 +154,7 @@ int CountCountries(char test[][MAX_LENGTH]){
 
 /*-----------------------------------------------------------------------------------------*/
 
-double Q1_Answer(char test[][MAX_LENGTH], int num, char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory]){
+double Q1_Answer(char test[][MAX_LENGTH], int num, char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory){
 
 	int i, index, count = 0;
 	double sum = 0;
@@ -255,35 +255,15 @@ int Q5_Answer(char *countryName, char territory[][MAX_LENGTH], int nTerritory)
 
 /*-----------------------------------------------------------------------------------------*/
 
-int main(){
-	char territory[MAX_TERRITORY][MAX_LENGTH]; // stores country names
-	double riskFactors[MAX_TERRITORY][15]; // stores risk factors
-
-
-	//Function outputs
-		char foundCountry[MAX_TERRITORY][MAX_LENGTH];
-		double values[MAX_TERRITORY];
-		int nFound;
-		double average;
-		
-		char maxCountry[MAX_LENGTH];
-		double maxValue;
-		
-		char top5Countries[5][MAX_LENGTH];
-    	double top5Values[5];
-    
-    	char matchingCountries[MAX_TERRITORY][MAX_LENGTH];
-    	int count;
-    	double statValue;
-    
-    //Test cases
-    	int i, j, k;
-    	// char test[10][MAX_LENGTH];
-    	//int num_test_countries;
-    
-    //Reads the data set & stores # of countries there are in the dataset
-   	 nTerritory = ReadData(territory, baseline, riskfactors);
+int main()
+{
+	char territory[MAX_TERRITORY][MAX_LENGTH];
+	double riskFactors[MAX_TERRITORY][NUM];
+	int nTerritory;
 	
+	int i, j, k, idx, actualRisk;
+	double average;
+    int count;
 
 	char riskText[15][40] = {
         "Baseline_LE", "Air_Pollution", "Ambient_PM2.5", "Ozone", 
@@ -291,35 +271,42 @@ int main(){
         "Unsafe_WaSH", "Metabolic", "Dietary", "High_Fasting_Plasma_Sugar", 
         "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"
     };
+    
+    nTerritory = ProcessData(territory, riskFactors);
+   	
+   	if (nTerritory < 2) {
+        printf("ERROR: Insufficient data (only %d territories)\n", nTerritory);
+        return 1;
+    }
+    
+    printf("Successfully loaded %d territories.\n\n", nTerritory);
 
-	int i, j, k, idx, actualRisk;
 
-	 /* ==================== QUESTION 1 ==================== */
+	/* ==================== QUESTION 1 ==================== */
     printf("Question 1:\n\n");
-	 char test1[5][5][MAX_LENGTH] = {
+    
+	char test1[5][5][MAX_LENGTH] = {
         {"Barbados", "Japan", "Chile", "Montenegro", "Australia"},
         {"Georgia", "Belize", "", "", ""},
         {"Peru", "Armenia", "Italy", "Cyprus", "Argentina"},
         {"France", "", "", "", ""},
         {"Portugal", "Afghanistan", "Greece", "Malta", "Argentina"}
     };
-
-	double average = 0;
-    int count = 0;
     
     for (i = 0; i < 5; i++) {
-        count = CountElements(test1[i], 5);
+        count = CountCountries(test1[i]);
 		average = Q1_Answer(test1[i], count, territory, riskFactors, nTerritory);
         
-        /* Print question */
         printf("What is the average baseline life expectancy across ");
         for (j = 0; j < count; j++) {
-            if ((j == count - 1) && (count > 1)) printf("and ");
-            if (j < count - 1) printf("%s, ", test1[i][j]);
-            else printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
+            if ((j == count - 1) && (count > 1)) 
+                printf("and ");
+            if (j < count - 1) 
+                printf("%s, ", test1[i][j]);
+            else 
+                printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
         }
         
-        /* Print answer */
         printf("A:\n");
         for (k = 0; k < count; k++) {
             idx = SearchTerritory(test1[i][k], territory, nTerritory);
@@ -333,8 +320,8 @@ int main(){
         printf("\nAverage = %.6lf\n\n", average);
     }
 
-	 /* ==================== QUESTION 2 ==================== */
-   
+
+	/* ==================== QUESTION 2 ==================== */
 	printf("\nQuestion 2:\n\n");
     
     char test2[5][MAX_LENGTH] = {"Air_Pollution", "Occupational", "Metabolic", "Tobacco", "Unsafe_Sex"};
@@ -342,62 +329,69 @@ int main(){
     for (i = 0; i < 5; i++) {
         actualRisk = GetRiskFactorIndex(test2[i]);
 
-		if (actualRisk!= -1){
-			printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", riskText[actualRisk + 1]);  // +1 because riskText includes Baseline at [0]
+		if (actualRisk != -1){
+			printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", 
+			       riskText[actualRisk]);
 			
 			char *highest = Q2_Answer(territory, riskFactors, nTerritory, actualRisk);
         	printf("A: %s\n\n", highest);
 		}
-
 		else{
 			printf("Risk factor '%s' not recognized.\n\n", test2[i]);
 		}
+    }
+
 
 	/* ==================== QUESTION 3 ==================== */
     printf("\nQuestion 3:\n\n");
     
-    int test3[5] = {AMBIENT_PM25, OZONE, HIGH_FASTING_PLASMA_SUGAR, SMOKING, SECOND_HAND_SMOKE};
+    char test3[5][MAX_LENGTH] = {"Ambient_PM2.5", "Ozone", "High_Fasting_Plasma_Sugar", "Smoking", "Second_Hand_Smoke"};
     char answer3[5][MAX_LENGTH];
     
     for (i = 0; i < 5; i++) {
-        actualRisk = test3[i];
-        Q3_Answer(actualRisk, answer3, territory, riskFactors, nTerritory);
+        actualRisk = GetRiskFactorIndex(test3[i]);
         
-        printf("Which five countries have the lowest loss of baseline life expectancy due to %s?\n", 
-               riskText[actualRisk + 1]);  // +1 because riskText includes Baseline at [0]
-        printf("A:\n");
-        
-        for (j = 0; j < 5; j++) {
-            printf("%d) %s\n", j + 1, answer3[j]);
+        if (actualRisk != -1) {
+            Q3_Answer(actualRisk, answer3, territory, riskFactors, nTerritory);
+            
+            printf("Which five countries have the lowest loss of baseline life expectancy due to %s?\n", 
+                   riskText[actualRisk]);
+            printf("A:\n");
+            
+            for (j = 0; j < 5; j++) {
+                printf("%d) %s\n", j + 1, answer3[j]);
+            }
+            printf("\n");
         }
-        printf("\n");
     }
 
+
 	/* ==================== QUESTION 4 ==================== */
-    
 	printf("\nQuestion 4:\n\n");
     
     int test4[5] = {75, 80, 82, 85, 90};
     
     for (i = 0; i < 5; i++) {
         printf("How many countries have a baseline life expectancy of at least %d?\n", test4[i]);
-        count = Q4_Answer((double)test4[i], baseline, nTerritory);
+        count = Q4_Answer((double)test4[i], riskFactors, nTerritory);
         printf("A: %d\n\n", count);
     }
+    
     
     /* ==================== QUESTION 5 ==================== */
     printf("\nQuestion 5:\n\n");
     
-    char testRisk5[5][MAX_LENGTH] = {"Ambient_PM2.5", "Ozone", "Occupational", "High_Fasting_Plasma_Sugar", "Smoking};
+    char testRisk5[5][MAX_LENGTH] = {"Ambient_PM2.5", "Ozone", "Occupational", 
+                                      "High_Fasting_Plasma_Sugar", "Smoking"};
     char testCountry[5][MAX_LENGTH] = {"Argentina", "Chile", "Italy", "Solomon_Islands", "Philippines"};
 	
     for (i = 0; i < 5; i++) {
         int cntIdx = Q5_Answer(testCountry[i], territory, nTerritory);
-        actualRisk = testRisk5[i];
+        actualRisk = GetRiskFactorIndex(testRisk5[i]);
         
-        if (cntIdx != -1) {
+        if (cntIdx != -1 && actualRisk != -1) {
             printf("What are the statistics for %s for %s?\n", 
-                   riskText[actualRisk + 1], territory[cntIdx]);
+                   riskText[actualRisk], territory[cntIdx]);
             printf("A:\n");
             printf("%-40s : %.6lf\n\n", territory[cntIdx], riskFactors[cntIdx][actualRisk]);
         } else {
@@ -408,6 +402,3 @@ int main(){
     return 0;
 }
 
-
-	
-}

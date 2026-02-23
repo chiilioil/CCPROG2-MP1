@@ -72,7 +72,14 @@
 */
 
 
-//processes data -- array for names (territory), and array for riskfactors where index 0 is baseline life expectancy, and 1-14 would be the 14 risk factors. also counts how many countries there are total in the dataset and returns this value. ASSUMES THAT MAX_TERRITORY can account for the number of territories that the dataset will hold.
+/* HELPER FUNCTION 
+	Purpose: Processes the imported dataset.
+	Returns: The number of countries there are in the dataset
+		@ territory: Array where territory names are stored.
+		@ riskFactors: Aray where the baseline life expectancy (index 0) and the 14 risk factors are stored (index 1 - 14)
+    Pre-condition: the imported data follows the format: territoryname	baselinelifeexpectancy	riskfactor1	riskfactor2	riskfactor3 ... riskfactor14
+*/
+
 int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
     int count = 0;
     int i;

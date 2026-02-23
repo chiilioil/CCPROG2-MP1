@@ -74,39 +74,59 @@
 	Purpose: Processes the imported dataset.
 	Returns: The number of countries there are in the dataset
 		@ territory: Array where territory names are stored.
-		@ riskFactors: Aray where the baseline life expectancy (index 0) and the 14 risk factors are stored (index 1 - 14)
-    Pre-condition: the imported data follows the format: territoryname	baselinelifeexpectancy	riskfactor1	riskfactor2	riskfactor3 ... riskfactor14
+		@ riskFactors: Aray where the baseline life expectancy (index 0) and the 14 risk factors are stored (index 1 - 14).
+    Pre-condition: the imported data follows the format: territoryname	baselinelifeexpectancy	riskfactor1	riskfactor2	riskfactor3 ... riskfactor14.
 */
 
 int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
-    int count = 0, i; // counter and indexing variables
+    int count = 0, i; // Counter and indexing variables.
 
-	// loops so long as the first line of text per row is a string (territory name)
+	// Loops so long as the first line of text per row is a string (territory name).
     while (scanf("%s", territory[count]) == 1) {
 
-		// loops to store the numerical data per country
+		// Loops to store the numerical data per territory.
         for (i = 0; i < NUM; i++) {
             scanf("%lf", &riskFactors[count][i]);
         }
         count++;
     }
 
-	// returns the number of territories in the dataset
+	// Returns the number of territories in the dataset.
     return count; 
 }
 
-// helping function for testing
+
+/* HELPER FUNCTION
+	Purpose: Gets the index of the user-inputted risk factor for testing purposes. 
+	Returns: The index of the indicated risk factor.
+		@ *riskName: The indicated risk factor in string format.
+    Pre-condition: The user-inputted risk factor is written exactly as it is in names[][] (no typographical errors or use of spaces instead of _).
+*/
+
 int GetRiskFactorIndex(char *riskName){ 
 
-	char names[15][MAX_LENGTH] = {"Baseline_Life_Expectancy", "Air_Pollution", "Ambient_PM2.5", "Ozone", "Household_Air_Pollution", "Environmental", "Occupational", "Unsafe_WaSH", "Metabolic", "Dietary", "High_Fasting_Plasma_Sugar", "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"};
+	// defines the string formats of each risk factor for comparison
+	char names[15][MAX_LENGTH] = {"Baseline_Life_Expectancy", "Air_Pollution", "Ambient_PM2.5", "Ozone", "Household_Air_Pollution",
+								  "Environmental", "Occupational", "Unsafe_WaSH", "Metabolic", "Dietary", "High_Fasting_Plasma_Sugar",
+								  "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"};
+	int i; // indexing variable
 
-	for (int i = 0; i < 15; i++){
+	// Looks for the string in names[][] that matches the indicated risk factor.
+	for (i = 0; i < 15; i++){
 		if (strcmp(riskName, names[i]) == 0)
-			return i;
+			return i; // Returns the index of the found string.
 	}
-	return -1;
+	return -1; // Returns -1 if string is not found.
 }
 
+
+/* HELPER FUNCTION
+	Purpose: 
+	Returns:
+		@ 
+		@ 
+    Pre-condition: 
+*/
 
 int SearchTerritory(char *territoryName, char territory[][MAX_LENGTH], int nTerritory){
     int i;

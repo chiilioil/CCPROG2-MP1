@@ -163,34 +163,38 @@ int CountCountries(char test[][MAX_LENGTH]){
 }
 
 /* HELPER FUNCTION
-	Purpose: 
-	Returns: 
+	Purpose: Sorts the territories according to the given values.
+	Returns:
 		@ territory: The array containing the names of the territories in the dataset.
-		@ values:
-		@ n: 
+		@ values: The array containing the values to sort.
+		@ n: The number of territories to sort.
     Pre-condition:
 */
 
 void SelectionSort (char territory[][MAX_LENGTH], double values[], int n)
 {
+	// indexing and temp variables
 	int i, j, minIdx;
     double tempVal;
     char tempName[MAX_LENGTH];
-    
+
     for (i = 0; i < n - 1; i++) {
-        minIdx = i;
-        
+        minIdx = i; // updates the index of the sorted part of the data
+
+		// looks for the index of the minimum value.
         for (j = i + 1; j < n; j++) {
             if (values[j] < values[minIdx]) {
                 minIdx = j;
             }
         }
-        
+
+		// updates the minimum index values.
         if (minIdx != i) {
             tempVal = values[i];
             values[i] = values[minIdx];
             values[minIdx] = tempVal;
-            
+
+			// updates the temp arrays with the newly sorted minimum value
             strcpy(tempName, territory[i]);
             strcpy(territory[i], territory[minIdx]);
             strcpy(territory[minIdx], tempName);

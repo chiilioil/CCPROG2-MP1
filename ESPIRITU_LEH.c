@@ -97,10 +97,10 @@ int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
 
 
 /* HELPER FUNCTION
-	Purpose: Gets the index of the user-inputted risk factor for testing purposes. 
-	Returns: The index of the indicated risk factor.
-		@ *riskName: The indicated risk factor in string format.
-    Pre-condition: The user-inputted risk factor is written exactly as it is in names[][] (no typographical errors or use of spaces instead of _).
+	Purpose: Gets the index of the test risk factor for testing purposes. 
+	Returns: The index of the test risk factor.
+		@ *riskName: The test risk factor in string format.
+    Pre-condition: The test risk factor is written exactly as it is in names[][] (no typographical errors or use of spaces instead of _).
 */
 
 int GetRiskFactorIndex(char *riskName){ 
@@ -111,34 +111,44 @@ int GetRiskFactorIndex(char *riskName){
 								  "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"};
 	int i; // indexing variable
 
-	// Looks for the string in names[][] that matches the indicated risk factor.
+	// Looks for the string in names[][] that matches the test risk factor.
 	for (i = 0; i < 15; i++){
 		if (strcmp(riskName, names[i]) == 0)
 			return i; // Returns the index of the found string.
 	}
-	return -1; // Returns -1 if string is not found.
+	return -1; // If string is not found.
 }
 
 
 /* HELPER FUNCTION
-	Purpose: 
-	Returns:
-		@ 
-		@ 
+	Purpose: Searches for the test territory in the dataset.
+	Returns: The index of the found territory or -1 if the territory is not found.
+		@ *territoryName: The name of the test territory.
+		@ territory: The array containing all territory names.
+		@ nTerritory: The number of territories in the dataset.
     Pre-condition: 
 */
 
 int SearchTerritory(char *territoryName, char territory[][MAX_LENGTH], int nTerritory){
-    int i;
+    
+	int i; // indexing variable
     
     for (i = 0; i < nTerritory; i++) {
         if (strcmp(territory[i], territoryName) == 0) {
-            return i; //returns index of territory if found
+            return i; // Returns index of the territory if found.
         }
     }
     
-    return -1; //if not found
+    return -1; // If not found
 }
+
+
+/* HELPER FUNCTION
+	Purpose: Counts the number of countries in the test case.
+	Returns: The number of countries in the test case.
+		@ test: The test test value that will be counted.
+    Pre-condition: Test sets will have at most five countries.
+*/
 
 int CountCountries(char test[][MAX_LENGTH]){
 		
@@ -146,47 +156,20 @@ int CountCountries(char test[][MAX_LENGTH]){
 	
 	for (i = 0; i < 5; i++){
 		if(test[i][0] != '\0')
-			count++; // if the first element of the string is not null (the string is not empty), increments count by one.
+			count++; // Increments the count by one if the string in index i is emppty or null.
 	}
 	
-	return count; // returns count of existing countries back to the main function
+	return count; // returns count of countries in the list.
 }
 
-/*-----------------------------------------------------------------------------------------*/
-
-double Q1_Answer(char test[][MAX_LENGTH], int num, char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory){
-
-	int i, index, count = 0;
-	double sum = 0;
-	
-	for (i = 0; i < num; i++){
-		index = SearchTerritory(test[i], territory, nTerritory);
-	
-		if (index != -1) {
-            sum += riskFactors[index][0]; 
-            count++;
-        }
-	}
-	
-	return (count > 0) ? (sum / count) : 0.0;
-}
-
-
-char* Q2_Answer(char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory, int risk){
-	
-	int i, index = 0; // indexing variable and to store the index for sorting
-	double max = -1; // value of the maximum data value for comparison
-	
-	for (i = 0; i < nTerritory; i++){ // goes through each one of the countries in the data set
-		if (riskFactors[i][risk] > max){ // checks for if the current country's data is greater than the maximum value
-			max = riskFactors[i][risk];
-			index = i; // if yes, update the maximum value and the corresponding index
-		}
-	}
-	
-	return territory[index]; // returns the index of the maximum value
-}
-
+/* HELPER FUNCTION
+	Purpose: 
+	Returns: 
+		@ territory: The array containing the names of the territories in the dataset.
+		@ values:
+		@ n: 
+    Pre-condition:
+*/
 
 void SelectionSort (char territory[][MAX_LENGTH], double values[], int n)
 {
@@ -215,30 +198,132 @@ void SelectionSort (char territory[][MAX_LENGTH], double values[], int n)
     }
 }
 
-void Q3_Answer(int riskIdx, char top5[][MAX_LENGTH],
-          char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory)
+/*-----------------------------------------------------------------------------------------*/
+
+/* Question 1 
+	Purpose: Computes and returns the answer to Q1
+	Returns: The average baseline life expectance of the test territories.
+		@ test: The test territories.
+		@ num: The number of territories in the test case.
+		@ territory: The array containing the names of the territories in the dataset.
+		@ riskFactors: The array containing the risk factors of each territory.
+    Pre-condition: 
+
+		Q1: What is the average baseline life expectancy across Barbados, Japan, Chile, Montenegro,
+			and Australia? List the names of each country, their values, and the average across the countries.
+        A1: Barbados                                 : 76.165622
+			Japan                                    : 84.557851
+			Chile                                    : 80.088079
+			Montenegro                               : 75.836708
+			Australia                                : 82.789955
+
+			Average = 79.887643
+		
+*/
+
+double Q1_Answer(char test[][MAX_LENGTH], int num, char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory){
+
+	int i, index, count = 0; // indexing and count variables
+	double sum = 0; // initialize sum for average computation
+
+	// checks if the territory is a valid territory in the dataset and adds it to the sum and count counters
+	for (i = 0; i < num; i++){
+		index = SearchTerritory(test[i], territory, nTerritory);
+	
+		if (index != -1) {
+            sum += riskFactors[index][0]; 
+            count++;
+        }
+	}
+	
+	return (count > 0) ? (sum / count) : 0.0; // returns the average baseline life expectancy of the test territories
+}
+
+
+/* Question 2
+	Purpose: Computes and returns the answer to Q2
+	Returns: The name of the country with the highest loss of life expectancy due to the test risk.
+		@ territory: The array containing the names of the territories in the dataset.
+		@ riskFactors: The array containing the risk factors in the dataset.
+		@ risk: The test risk factor.
+    Pre-condition: 
+
+        Q2:  Which country has the highest (maximum) loss of life expectancy due to Air_Pollution?
+        A2:  Solomon_Islands
+*/
+
+char* Q2_Answer(char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory, int risk){
+	
+	int i, index = 0; // indexing variables
+	double max = -1; // value of the maximum data value for comparison
+
+	// Looks through the dataset and finds the maximum value for the test risk factor. 
+	for (i = 0; i < nTerritory; i++){
+		if (riskFactors[i][risk] > max){
+			max = riskFactors[i][risk];
+			index = i;
+		}
+	}
+	
+	return territory[index]; // Returns name of the territory with the maximum value.
+}
+
+
+/* Question 3
+	Purpose: Computes and returns the answer for Q3. 
+	Returns: N/A -- stores the answer via pointer
+		@ riskIdx: The test risk.
+		@ top5: The array that stores the answer to the question.
+		@ territory: The array containing the names of the territories in the dataset.
+		@ riskFactors: The array containing the risk factors in the dataset.
+		@ nTerritory: The number of territories in the dataset.
+    Pre-condition: 
+
+	Q3:	Which five countries have the lowest loss of baseline life expectancy due to Ambient_PM?
+        A3: 1) Sweden
+			2) Finland
+			3) Iceland
+			4) Somalia
+			5) New_Zealand
+*/
+
+void Q3_Answer(int riskIdx, char top5[][MAX_LENGTH], char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory)
 {
-    int i, count = 0;
+    int i, count = 0; // indexing and temp variables
     char tempTerritory[MAX_TERRITORY][MAX_LENGTH];
     double tempValues[MAX_TERRITORY];
-    
+
+	// Copies each territory from the dataset and their corresponding values into the temporary arrays.
     for (i = 1; i < nTerritory; i++) {
         strcpy(tempTerritory[count], territory[i]);
         tempValues[count] = riskFactors[i][riskIdx];
         count++;
     }
 
-    SelectionSort(tempTerritory, tempValues, count);
+    SelectionSort(tempTerritory, tempValues, count); // calls SelectionSort function to sort the top five countries.
     
     for (i = 0; i < 5 && i < count; i++) {
         strcpy(top5[i], tempTerritory[i]);  // Copy top 5 
     }
 }
 
+/* Question 4 
+	Purpose: Calculates and returns the answer to Q4.
+	Returns: The number of countries that have a baseline life expectancy within the threshold.
+		@ threshold: The test threshold for checking.
+		@ riskFactors: The array containing the risk factors in the dataset.
+		@ nTerritory: The number of territories in the dataset.
+    Pre-condition: The threshold is a number from 0 to 100 inclusive.
+
+	Q4: How many countries have a baseline life expectancy of at least 75?
+	A4: 85
+*/
+
 int Q4_Answer(double threshold, double riskFactors[][NUM], int nTerritory)
 {
-    int i, count = 0;
-    
+    int i, count = 0; // indexing and count variables
+
+	// Increments count when the country's baseline LE is greater than or equal to the threshold.
     for (i = 1; i < nTerritory; i++) {
         if (riskFactors[i][0] >= threshold) { // Index 0 is baseline LE
             count++;
@@ -248,23 +333,38 @@ int Q4_Answer(double threshold, double riskFactors[][NUM], int nTerritory)
     return count;
 }
 
+
+/* Question 5
+	Purpose: Calculates and returns the answer to Q5.
+	Returns: The index of the found territory
+		@ *countryName: The test territory name that will be searched.
+		@ territory: The array containing the names of the territories in the dataset.
+		@ nTerritory: The number of territories in the dataset.
+    Pre-condition: The test case is in string format.
+
+	Q5:  What are the statistics for Ambient_PM for Argentina?
+    A5:  Argentina                                : 0.426051
+		
+*/
+
 int Q5_Answer(char *countryName, char territory[][MAX_LENGTH], int nTerritory)
 {
-    return SearchTerritory(countryName, territory, nTerritory);
+    return SearchTerritory(countryName, territory, nTerritory); // calls the SearchTerritory function, pushing the test country name as the parameter.
 }
 
 /*-----------------------------------------------------------------------------------------*/
 
 int main()
 {
-	char territory[MAX_TERRITORY][MAX_LENGTH];
-	double riskFactors[MAX_TERRITORY][NUM];
-	int nTerritory;
-	
-	int i, j, k, idx, actualRisk;
-	double average;
-    int count;
+	char territory[MAX_TERRITORY][MAX_LENGTH]; // array containing the names of the territories in the dataset
+	double riskFactors[MAX_TERRITORY][NUM]; // array containing the risk factors of each territory in the dataset
+	int nTerritory; // the number of territories in the dataset
 
+	int i, j, k, idx, count; // indexing variables
+	int actualRisk; // stores the test risk for testing
+	double average; // stores the average for Q1
+
+	// arrayed risks for printing
 	char riskText[15][40] = {
         "Baseline_LE", "Air_Pollution", "Ambient_PM2.5", "Ozone", 
         "Household_Air_Pollution", "Environmental", "Occupational", 
@@ -272,19 +372,21 @@ int main()
         "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"
     };
     
-    nTerritory = ProcessData(territory, riskFactors);
-   	
+    nTerritory = ProcessData(territory, riskFactors); // sets nTerritory to the number of territories in the data set. Also processes the data.
+
+	// safety check
    	if (nTerritory < 2) {
         printf("ERROR: Insufficient data (only %d territories)\n", nTerritory);
         return 1;
     }
     
     printf("Successfully loaded %d territories.\n\n", nTerritory);
-
-
+	
 	/* ==================== QUESTION 1 ==================== */
-    printf("Question 1:\n\n");
     
+	printf("Question 1:\n\n");
+
+	// Test cases for Q1
 	char test1[5][5][MAX_LENGTH] = {
         {"Barbados", "Japan", "Chile", "Montenegro", "Australia"},
         {"Georgia", "Belize", "", "", ""},
@@ -292,11 +394,13 @@ int main()
         {"France", "", "", "", ""},
         {"Portugal", "Afghanistan", "Greece", "Malta", "Argentina"}
     };
-    
-    for (i = 0; i < 5; i++) {
-        count = CountCountries(test1[i]);
-		average = Q1_Answer(test1[i], count, territory, riskFactors, nTerritory);
-        
+
+	// loops per test case.
+    for (i = 0; i < 5; i++) 
+        count = CountCountries(test1[i]); // counts the number of countries in the test case
+		average = Q1_Answer(test1[i], count, territory, riskFactors, nTerritory); // calculates the answer for Q1
+
+		// prints the question according to the test territories.
         printf("What is the average baseline life expectancy across ");
         for (j = 0; j < count; j++) {
             if ((j == count - 1) && (count > 1)) 
@@ -306,58 +410,67 @@ int main()
             else 
                 printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
         }
-        
+
+		// prints the answer to q1
         printf("A:\n");
         for (k = 0; k < count; k++) {
             idx = SearchTerritory(test1[i][k], territory, nTerritory);
             
             if (idx != -1)
                 printf("%-40s : %.6lf\n", territory[idx], riskFactors[idx][0]);
-            else
+            else // safety check
                 printf("%-40s : NOT FOUND\n", test1[i][k]);
         }
-        
         printf("\nAverage = %.6lf\n\n", average);
     }
 
 
 	/* ==================== QUESTION 2 ==================== */
+	
 	printf("\nQuestion 2:\n\n");
-    
-    char test2[5][MAX_LENGTH] = {"Air_Pollution", "Occupational", "Metabolic", "Tobacco", "Unsafe_Sex"};
-    
-    for (i = 0; i < 5; i++) {
-        actualRisk = GetRiskFactorIndex(test2[i]);
 
+	// test cases for Q2
+    char test2[5][MAX_LENGTH] = {"Air_Pollution", "Occupational", "Metabolic", "Tobacco", "Unsafe_Sex"};
+
+	// loop for test cases
+    for (i = 0; i < 5; i++) {
+        actualRisk = GetRiskFactorIndex(test2[i]); // gets the index of the test risk
+
+		// prints the question
 		if (actualRisk != -1){
-			printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", 
-			       riskText[actualRisk]);
-			
+			printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", riskText[actualRisk]);
+
+			// prints the answer to Q2
 			char *highest = Q2_Answer(territory, riskFactors, nTerritory, actualRisk);
         	printf("A: %s\n\n", highest);
 		}
-		else{
+		else{ // safety check
 			printf("Risk factor '%s' not recognized.\n\n", test2[i]);
 		}
     }
 
 
 	/* ==================== QUESTION 3 ==================== */
-    printf("\nQuestion 3:\n\n");
-    
+  
+	printf("\nQuestion 3:\n\n");
+
+	// test cases for Q3
     char test3[5][MAX_LENGTH] = {"Ambient_PM2.5", "Ozone", "High_Fasting_Plasma_Sugar", "Smoking", "Second_Hand_Smoke"};
-    char answer3[5][MAX_LENGTH];
-    
+    char answer3[5][MAX_LENGTH]; // array that will hold the answer for Q3
+
+
+	// loops for the test cases
     for (i = 0; i < 5; i++) {
-        actualRisk = GetRiskFactorIndex(test3[i]);
+        actualRisk = GetRiskFactorIndex(test3[i]); // gets the index of the test risk
         
         if (actualRisk != -1) {
-            Q3_Answer(actualRisk, answer3, territory, riskFactors, nTerritory);
-            
+            Q3_Answer(actualRisk, answer3, territory, riskFactors, nTerritory); // calculates the answer for Q3
+
+			// prints the question and answer to Q3
             printf("Which five countries have the lowest loss of baseline life expectancy due to %s?\n", 
                    riskText[actualRisk]);
             printf("A:\n");
-            
+
             for (j = 0; j < 5; j++) {
                 printf("%d) %s\n", j + 1, answer3[j]);
             }
@@ -367,38 +480,44 @@ int main()
 
 
 	/* ==================== QUESTION 4 ==================== */
+	
 	printf("\nQuestion 4:\n\n");
-    
+
+	// test cases for Q4
     int test4[5] = {75, 80, 82, 85, 90};
-    
+
+	// loops for the test cases
     for (i = 0; i < 5; i++) {
         printf("How many countries have a baseline life expectancy of at least %d?\n", test4[i]);
         count = Q4_Answer((double)test4[i], riskFactors, nTerritory);
         printf("A: %d\n\n", count);
     }
     
-    
     /* ==================== QUESTION 5 ==================== */
-    printf("\nQuestion 5:\n\n");
-    
+  
+	printf("\nQuestion 5:\n\n");
+
+	// test cases for Q5
     char testRisk5[5][MAX_LENGTH] = {"Ambient_PM2.5", "Ozone", "Occupational", 
                                       "High_Fasting_Plasma_Sugar", "Smoking"};
     char testCountry[5][MAX_LENGTH] = {"Argentina", "Chile", "Italy", "Solomon_Islands", "Philippines"};
-	
+
+	// loops for the test cases
     for (i = 0; i < 5; i++) {
-        int cntIdx = Q5_Answer(testCountry[i], territory, nTerritory);
-        actualRisk = GetRiskFactorIndex(testRisk5[i]);
-        
+        int cntIdx = Q5_Answer(testCountry[i], territory, nTerritory); // looks for the index of the test territory.
+        actualRisk = GetRiskFactorIndex(testRisk5[i]); // gets the index of the test risk.
+
+		// prints the question and answer for Q5
         if (cntIdx != -1 && actualRisk != -1) {
             printf("What are the statistics for %s for %s?\n", 
                    riskText[actualRisk], territory[cntIdx]);
             printf("A:\n");
             printf("%-40s : %.6lf\n\n", territory[cntIdx], riskFactors[cntIdx][actualRisk]);
-        } else {
+        } else { // safety check
             printf("Country %s not found.\n\n", testCountry[i]);
         }
     }
     
-    return 0;
+    return 0; // ends the program
 }
 

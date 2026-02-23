@@ -76,7 +76,8 @@
 int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
     int count = 0;
     int i;
-    
+
+	
     while (scanf("%s", territory[count]) == 1) { //loop for reading all data
 
         for (i = 0; i < NUM; i++) { //loop for reading the risk factors
@@ -127,64 +128,29 @@ int CountCountries(char test[][MAX_LENGTH]){
 
 /*-----------------------------------------------------------------------------------------*/
 
- printf("Question 1:\n\n");
-	 char test1[5][5][MAX_LENGTH] = {
-        {"Barbados", "Japan", "Chile", "Montenegro", "Australia"},
-        {"Georgia", "Belize"},
-        {"Peru", "Armenia", "Italy", "Cyprus", "Argentina"},
-        {"France"},
-        {"Portugal", "Afghanistan", "Greece", "Malta", "Argentina"}
-    };
+double Q1_Answer(char test[][MAX_LENGTH], int num, char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory]){
 
-    for (i = 0; i < 5; i++) {;
-							 
-        double answer1 = Q1_Answer(test1[i], territory);
-        
-        /* Print question */
-        printf("What is the average baseline life expectancy across ");
-        for (j = 0; j < count; j++) {
-            if ((j == count - 1) && (count > 1))
-                printf("and ");
-            if (j < count - 1)
-                printf("%s, ", test1[i][j]);
-            else
-                printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
-        }
-        
-        /* Print answer */
-        printf("A:\n");
-        for (k = 0; k < count; k++) {
-            idx = SearchTerritory(test1[i][k], territory, nTerritory);
-            
-            if (idx != -1)
-                printf("%-40s : %.6lf\n", territory[idx], baseline[idx]);
-            else
-                printf("%-40s : NOT FOUND\n", test1[i][k]);
-        }
-        
-        printf("\nAverage = %.6lf\n\n", answer1);
-    }
-
-
-
-double Q1_Answer(test[][MAX_TERRITORIES]){
-
-	int i, index;
+	int i, index, count = 0;
 	double sum = 0;
 	
-	*count = countCountries(test);
-
+	for (i = 0; i < num; i++){
+		index = SearchTerritory(test[i], territory, nTerritory);
 	
-
-	for ()
-
+		if (index != -1) {
+            sum += riskFactors[index][0]; 
+            count++;
+        }
+	}
 	
-
-	
-	
-	
-	return 0;
+	return (count > 0) ? (sum / count) : 0.0;
 }
+
+
+double Q2_Answer(){
+
+	
+}
+
 
 
 

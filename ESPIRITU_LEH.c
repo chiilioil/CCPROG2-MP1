@@ -90,7 +90,7 @@ int ProcessData(char territory[][MAX_LENGTH], double riskFactors[][NUM]) {
 }
 
 // helping function for testing
-int GetRiskFactorIndex(char *riskName){ // does the same thing as the code above, pacheck nlng if prefer m
+int GetRiskFactorIndex(char *riskName){ 
 
 	char names[15][MAX_LENGTH] = {"Baseline_Life_Expectancy", "Air_Pollution", "Ambient_PM2.5", "Ozone", "Household_Air_Pollution", "Environmental", "Occupational", "Unsafe_WaSH", "Metabolic", "Dietary", "High_Fasting_Plasma_Sugar", "Tobacco", "Smoking", "Second_Hand_Smoke", "Unsafe_Sex"};
 
@@ -146,9 +146,19 @@ double Q1_Answer(char test[][MAX_LENGTH], int num, char territory[][MAX_LENGTH],
 }
 
 
-double Q2_Answer(){
-
+char* Q2_Answer(char territory[][MAX_LENGTH], double riskFactors[][NUM], int nTerritory, int risk){
 	
+	int i, index = 0; // indexing variable and to store the index for sorting
+	double max = -1; // value of the maximum data value for comparison
+	
+	for (i = 0; i < nTerritory; i++){ // goes through each one of the countries in the data set
+		if (riskFactors[i][risk] > max){ // checks for if the current country's data is greater than the maximum value
+			max = riskFactors[i][risk];
+			index = i; // if yes, update the maximum value and the corresponding index
+		}
+	}
+	
+	return territory[index]; // returns the index of the maximum value
 }
 
 
@@ -253,7 +263,7 @@ int main(){
 
 	int i, j, k, idx, actualRisk;
 
-	  /* ==================== QUESTION 1 ==================== */
+	 /* ==================== QUESTION 1 ==================== */
     printf("Question 1:\n\n");
 	 char test1[5][5][MAX_LENGTH] = {
         {"Barbados", "Japan", "Chile", "Montenegro", "Australia"},
@@ -268,18 +278,14 @@ int main(){
     
     for (i = 0; i < 5; i++) {
         count = CountElements(test1[i], 5);
-        
-        Q1_Answer(test1[i], count, &average, territory, baseline, nTerritory);
+		average = Q1_Answer(test1[i], count, territory, riskFactors, nTerritory);
         
         /* Print question */
         printf("What is the average baseline life expectancy across ");
         for (j = 0; j < count; j++) {
-            if ((j == count - 1) && (count > 1))
-                printf("and ");
-            if (j < count - 1)
-                printf("%s, ", test1[i][j]);
-            else
-                printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
+            if ((j == count - 1) && (count > 1)) printf("and ");
+            if (j < count - 1) printf("%s, ", test1[i][j]);
+            else printf("%s? List the names of each country, their values, and the average across the countries.\n", test1[i][j]);
         }
         
         /* Print answer */
@@ -288,7 +294,7 @@ int main(){
             idx = SearchTerritory(test1[i][k], territory, nTerritory);
             
             if (idx != -1)
-                printf("%-40s : %.6lf\n", territory[idx], baseline[idx]);
+                printf("%-40s : %.6lf\n", territory[idx], riskFactors[idx][0]);
             else
                 printf("%-40s : NOT FOUND\n", test1[i][k]);
         }
@@ -297,18 +303,24 @@ int main(){
     }
 
 	 /* ==================== QUESTION 2 ==================== */
-    printf("\nQuestion 2:\n\n");
+   
+	printf("\nQuestion 2:\n\n");
     
-    int test2[5] = {AIR_POLLUTION, OCCUPATIONAL, METABOLIC, TOBACCO, UNSAFE_SEX};
+    char test2[5][MAX_LENGTH] = {"Air_Pollution", "Occupational", "Metabolic", "Tobacco", "Unsafe_Sex"};
     
     for (i = 0; i < 5; i++) {
-        actualRisk = test2[i];
-        printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", 
-               riskText[actualRisk + 1]);  // +1 because riskText includes Baseline at [0]
-        
-        char *highest = Q2_Answer(actualRisk, territory, riskFactors, nTerritory);
-        printf("A: %s\n\n", highest);
-    }
+        actualRisk = GetRiskFactorIndex(test2[i]);
+
+		if (actualRisk!= -1){
+			printf("Which country has the highest (maximum) loss of life expectancy due to %s?\n", riskText[actualRisk + 1]);  // +1 because riskText includes Baseline at [0]
+			
+			char *highest = Q2_Answer(territory, riskFactors, nTerritory, actualRisk);
+        	printf("A: %s\n\n", highest);
+		}
+
+		else{
+			printf("Risk factor '%s' not recognized.\n\n", test2[i]);
+		}
 
 	/* ==================== QUESTION 3 ==================== */
     printf("\nQuestion 3:\n\n");
